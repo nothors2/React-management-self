@@ -1,5 +1,16 @@
-##따라해보기
+## deply
+npm run build
+npm install --save-dev gh-pages
+# 설치후
+npm run deploy
 
+## package.json추가
+"homepage":"https://nothors2.github.io/React-management-self"  
+
+## 따라해보기
+
+https://material-ui.com/
+$ npm install @material-ui/core
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
