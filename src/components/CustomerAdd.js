@@ -21,7 +21,7 @@ class CustomerAdd extends React.Component {
         this.state = {
             file: null,
             userName: '',
-            birthday: '',
+            age: '',
             gender: '',
             job: '',
             fileName: '',
@@ -31,20 +31,20 @@ class CustomerAdd extends React.Component {
 
     handleFormSubmit = (e) => {
         e.preventDefault()
-        this.addCustomer()
-            .then((response) => {
-                console.log(response.data);
-                this.props.stateRefresh();
-            })
-        this.setState({
-            file: null,
-            userName: '',
-            birthday: '',
-            gender: '',
-            job: '',
-            fileName: '',
-            open: false
-        })
+        this.addCustomer();
+        //     .then((response) => {
+        //         console.log(response.data);
+        //         this.props.stateRefresh();
+        //     })
+        // this.setState({
+        //     file: null,
+        //     userName: '',
+        //     birthday: '',
+        //     gender: '',
+        //     job: '',
+        //     fileName: '',
+        //     open: false
+        // })
     }
 
     handleFileChange = (e) => {
@@ -59,13 +59,25 @@ class CustomerAdd extends React.Component {
         nextState[e.target.name] = e.target.value;
         this.setState(nextState);
     }
-
+    id = 7
     addCustomer = () => {
+        const customer = {
+            id:this.id,
+            name: this.state.userName,
+            image: 'https://placeimg.com/64/64/',
+            age: this.state.age,
+            gender: this.state.gender,
+            job: this.state.job
+        };
+        this.id++;
+        this.props.addCustomer(customer);
+
+        return;
         const url = '/api/customers';
         const formData = new FormData();
         formData.append('image', this.state.file);
         formData.append('name', this.state.userName);
-        formData.append('birthday', this.state.birthday);
+        formData.append('age', this.state.age);
         formData.append('gender', this.state.gender);
         formData.append('job', this.state.job);
         const config = {
@@ -86,7 +98,7 @@ class CustomerAdd extends React.Component {
         this.setState({
             file: null,
             userName: '',
-            birthday: '',
+            age: '',
             gender: '',
             job: '',
             fileName: '',
@@ -112,7 +124,7 @@ class CustomerAdd extends React.Component {
                         </label>
                         <br/>
                         <TextField label="이름" type="text" name="userName" value={this.state.userName} onChange={this.handleValueChange}/><br/>
-                        <TextField label="생년월일" type="text" name="birthday" value={this.state.birthday} onChange={this.handleValueChange}/><br/>
+                        <TextField label="나이" type="text" name="age" value={this.state.age} onChange={this.handleValueChange}/><br/>
                         <TextField label="성별" type="text" name="gender" value={this.state.gender} onChange={this.handleValueChange}/><br/>
                         <TextField label="직업" type="text" name="job" value={this.state.job} onChange={this.handleValueChange}/><br/>
                     </DialogContent>

@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableBody from '@material-ui/core/TableBody'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 
@@ -150,26 +151,48 @@ class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      customers: '',
+      customers,
       completed: 0,
       searchKeyword: ''
     }
   }
 
   stateRefresh = () => {
+    this.setState({ change: "1" });
+    return;
+
     this.setState({
       customers: '',
       completed: 0,
-      searchKeyword: ''
+      searchKeyword: '',
+      change:'1'
     });
     this.callApi()
       .then(res => this.setState({customers: res}))
       .catch(err => console.log(err));
   }
 
+  addCustomer = (customer) => {
+    let customers = this.state.customers;
+    customers.push(customer);
+    this.setState({ customers: customers });
+  }
+  removeCustomer = (id) => {
+    var customers = this.state.customers.filter((c) => {
+      return c.id != id;
+    });
+    this.setState({ customers: customers });
+  }
   componentDidMount() {
+
+    //this.addCustomer(customer);
+    //console.log(customers)
+    //this.setState({ customers: customers });
+    //console.log('this.state.customers',this.state);
+    //this.stateRefresh();
     return;
-    this.timer = setInterval(this.progress, 20);
+
+    this.timer = setInterval(this.progress, 20000);
     this.callApi()
       .then(res => this.setState({customers: res}))
       .catch(err => console.log(err));
@@ -193,7 +216,18 @@ class App extends React.Component{
   }  
   render() {
     const { classes } = this.props;
-    console.log(classes)
+    
+    console.log('this.state.customers',this.state);
+    const filteredComponents = (list) => {
+      
+      return list.map((data,i) => {
+        console.log('filteredComponents data',data);
+        return (
+          <Customer key={i} customer={data} removeCustomer={this.removeCustomer} ></Customer>
+        );
+      }) 
+    }
+
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -223,7 +257,7 @@ class App extends React.Component{
           </Toolbar>
         </AppBar>
         <div className={classes.menu}>
-          <CustomerAdd stateRefresh={this.stateRefresh}/>
+          <CustomerAdd stateRefresh={this.stateRefresh} addCustomer={this.addCustomer}/>
         </div>
         <Paper>
           <Table   className={classes.table}>
@@ -239,13 +273,14 @@ class App extends React.Component{
               </TableRow>
             </TableHead>
             <TableBody>
-              {
-                customers.map((data,i) => {
-                  return (
-                    <Customer key={i} customer={data}></Customer>
-                  );
-                })
-              }
+            {this.state.customers ? 
+                filteredComponents(this.state.customers) : 
+                <TableRow>
+                  <TableCell colSpan="6" align="center">
+                    <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
+                  </TableCell>
+                </TableRow>
+            } 
             </TableBody>
             
           </Table>

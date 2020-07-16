@@ -16,7 +16,7 @@ class Customer extends React.Component{
         <TableCell >{customer.gender}</TableCell>
         <TableCell >{customer.job}</TableCell>
         
-        <TableCell><CustomerDelete  id={customer.id}/></TableCell>
+        <TableCell><CustomerDelete  id={customer.id} removeCustomer={this.props.removeCustomer}/></TableCell>
       </TableRow>
     )
   }

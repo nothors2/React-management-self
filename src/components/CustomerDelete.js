@@ -26,8 +26,9 @@ class Customer extends React.Component{
       })
   }
 
-  deleteCustomer(id) {
-    console.log(id, "삭제 됩니다.");
+  deleteCustomer( ) {
+    console.log( "삭제 됩니다.");
+    this.props.removeCustomer(this.props.id);
     this.setState({
         open: false
     })
@@ -47,7 +48,7 @@ class Customer extends React.Component{
             선택한 고객 정보가 삭제 됩니다.
           </DialogContent>
           <DialogActions>
-            <Button variant="contained" color="primary" onClick={(e) => {this.deleteCustomer(this.props.id)}}>삭제</Button>
+            <Button variant="contained" color="primary" onClick={(e) => {this.deleteCustomer()}}>삭제</Button>
             <Button variant="outlined" color="primary" onClick={this.handleClose}>닫기</Button>
           </DialogActions>
         </Dialog>
